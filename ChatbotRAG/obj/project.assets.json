@@ -1,11 +1,68 @@
 {
   "version": 3,
   "targets": {
-    ".NETCoreApp,Version=v3.1": {}
+    ".NETCoreApp,Version=v3.1": {
+      "ChatbotRAG.Data/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "ChatbotRAG.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ChatbotRAG.Data.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ChatbotRAG.Data.dll": {}
+        }
+      },
+      "ChatbotRAG.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "compile": {
+          "bin/placeholder/ChatbotRAG.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ChatbotRAG.Domain.dll": {}
+        }
+      },
+      "ChatbotRAG.Infrastructure/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "ChatbotRAG.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ChatbotRAG.Infrastructure.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ChatbotRAG.Infrastructure.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "ChatbotRAG.Data/1.0.0": {
+      "type": "project",
+      "path": "../ChatbotRAG.Data/ChatbotRAG.Data.csproj",
+      "msbuildProject": "../ChatbotRAG.Data/ChatbotRAG.Data.csproj"
+    },
+    "ChatbotRAG.Domain/1.0.0": {
+      "type": "project",
+      "path": "../ChatbotRAG.Domain/ChatbotRAG.Domain.csproj",
+      "msbuildProject": "../ChatbotRAG.Domain/ChatbotRAG.Domain.csproj"
+    },
+    "ChatbotRAG.Infrastructure/1.0.0": {
+      "type": "project",
+      "path": "../ChatbotRAG.Infrastructure/ChatbotRAG.Infrastructure.csproj",
+      "msbuildProject": "../ChatbotRAG.Infrastructure/ChatbotRAG.Infrastructure.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    ".NETCoreApp,Version=v3.1": []
+    ".NETCoreApp,Version=v3.1": [
+      "ChatbotRAG.Data >= 1.0.0",
+      "ChatbotRAG.Domain >= 1.0.0",
+      "ChatbotRAG.Infrastructure >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\LENOVO\\.nuget\\packages\\": {}
@@ -13,9 +70,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\LENOVO\\source\\repos\\ChatbotRAG\\ChatbotRAG\\ChatbotRAG.csproj",
-      "projectName": "ChatbotRAG",
-      "projectPath": "C:\\Users\\LENOVO\\source\\repos\\ChatbotRAG\\ChatbotRAG\\ChatbotRAG.csproj",
+      "projectUniqueName": "C:\\Users\\LENOVO\\source\\repos\\ChatbotRAG\\ChatbotRAG\\ChatbotRAG.API.csproj",
+      "projectName": "ChatbotRAG.API",
+      "projectPath": "C:\\Users\\LENOVO\\source\\repos\\ChatbotRAG\\ChatbotRAG\\ChatbotRAG.API.csproj",
       "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\LENOVO\\source\\repos\\ChatbotRAG\\ChatbotRAG\\obj\\",
       "projectStyle": "PackageReference",
@@ -33,7 +90,17 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\LENOVO\\source\\repos\\ChatbotRAG\\ChatbotRAG.Data\\ChatbotRAG.Data.csproj": {
+              "projectPath": "C:\\Users\\LENOVO\\source\\repos\\ChatbotRAG\\ChatbotRAG.Data\\ChatbotRAG.Data.csproj"
+            },
+            "C:\\Users\\LENOVO\\source\\repos\\ChatbotRAG\\ChatbotRAG.Domain\\ChatbotRAG.Domain.csproj": {
+              "projectPath": "C:\\Users\\LENOVO\\source\\repos\\ChatbotRAG\\ChatbotRAG.Domain\\ChatbotRAG.Domain.csproj"
+            },
+            "C:\\Users\\LENOVO\\source\\repos\\ChatbotRAG\\ChatbotRAG.Infrastructure\\ChatbotRAG.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\LENOVO\\source\\repos\\ChatbotRAG\\ChatbotRAG.Infrastructure\\ChatbotRAG.Infrastructure.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

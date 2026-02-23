@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.36631.11
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatbotRAG", "ChatbotRAG\ChatbotRAG.csproj", "{6828E30E-42C7-40BA-9D36-A2F3EF7EE493}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatbotRAG", "ChatbotRAG\ChatbotRAG.csproj", "{6828E30E-42C7-40BA-9D36-A2F3EF7EE493}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatbotRAG.Domain", "ChatbotRAG.Domain\ChatbotRAG.Domain.csproj", "{B7890419-DC95-4DD4-9698-166EEF9AFF25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatbotRAG.Data", "ChatbotRAG.Data\ChatbotRAG.Data.csproj", "{00CCF67A-798F-457C-A83A-9BAC571A2FBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatbotRAG.Infrastructure", "ChatbotRAG.Infrastructure\ChatbotRAG.Infrastructure.csproj", "{3EEE5333-19DE-4BF4-88B0-623ED1AE6A41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{6828E30E-42C7-40BA-9D36-A2F3EF7EE493}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6828E30E-42C7-40BA-9D36-A2F3EF7EE493}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6828E30E-42C7-40BA-9D36-A2F3EF7EE493}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7890419-DC95-4DD4-9698-166EEF9AFF25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7890419-DC95-4DD4-9698-166EEF9AFF25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7890419-DC95-4DD4-9698-166EEF9AFF25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7890419-DC95-4DD4-9698-166EEF9AFF25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00CCF67A-798F-457C-A83A-9BAC571A2FBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00CCF67A-798F-457C-A83A-9BAC571A2FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00CCF67A-798F-457C-A83A-9BAC571A2FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00CCF67A-798F-457C-A83A-9BAC571A2FBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EEE5333-19DE-4BF4-88B0-623ED1AE6A41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EEE5333-19DE-4BF4-88B0-623ED1AE6A41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EEE5333-19DE-4BF4-88B0-623ED1AE6A41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EEE5333-19DE-4BF4-88B0-623ED1AE6A41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

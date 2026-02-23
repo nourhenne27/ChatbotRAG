@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "KmacfztqoTaCkg7MwUDYjYxSbsM5aO7rMqf3Ufj2CBCpyvJQ7PKKMLNMEGdbb6HDKj4mwQLuXGHzUCQW+47O7g==",
+  "dgSpecHash": "+gjlFe+7s7KHydjbIwOWRpzCyUhQ4OwUJqjRkeMn46PHElK7T5BSKUqNUJEwN7WPhveLVJ3zqRSDJbVkvbi0wg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\LENOVO\\source\\repos\\ChatbotRAG\\ChatbotRAG\\ChatbotRAG.csproj",
+  "projectFilePath": "C:\\Users\\LENOVO\\source\\repos\\ChatbotRAG\\ChatbotRAG\\ChatbotRAG.API.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
