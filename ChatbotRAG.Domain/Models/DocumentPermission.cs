@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ChatbotRAG.Domain.Models
 {
-    class Feedback
+    class Class1
     {
     }
 }
