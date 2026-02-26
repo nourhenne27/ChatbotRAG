@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.36631.11
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatbotRAG", "ChatbotRAG\ChatbotRAG.csproj", "{6828E30E-42C7-40BA-9D36-A2F3EF7EE493}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatbotRAG.API", "ChatbotRAG\ChatbotRAG.API.csproj", "{6828E30E-42C7-40BA-9D36-A2F3EF7EE493}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatbotRAG.Domain", "ChatbotRAG.Domain\ChatbotRAG.Domain.csproj", "{B7890419-DC95-4DD4-9698-166EEF9AFF25}"
 EndProject

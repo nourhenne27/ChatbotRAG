@@ -1,0 +1,213 @@
+🧠 1️⃣ Comprendre l’architecture EF Core
+🔹 Titre à comprendre :
+➜ Architecture en couches (Domain / Data / API)
+Tu dois savoir :
+
+Différence entre Domain Model et Configuration
+
+Pourquoi on sépare les entités (User) des configurations (UserConfiguration)
+
+Le rôle du DbContext
+
+Pourquoi c’est important ?
+
+Parce que UserConfiguration ne fonctionne que dans le DbContext via :
+
+modelBuilder.ApplyConfigurationsFromAssembly(...)
+
+📖 Source :
+
+Microsoft Docs — DbContext & Model building
+https://learn.microsoft.com/en-us/ef/core/modeling/
+
+🧱 2️⃣ Fluent API (Très important)
+🔹 Titre :
+➜ Fluent API dans EF Core
+Tu dois comprendre :
+
+Différence entre Data Annotations et Fluent API
+
+Pourquoi on utilise builder.Property(...)
+
+Ce que fait EntityTypeBuilder<T>
+
+Exemple dans ton code :
+builder.Property(u => u.Username)
+       .IsRequired()
+       .HasMaxLength(50);
+
+👉 Ici tu configures :
+
+NOT NULL
+
+VARCHAR(50)
+
+📖 Source officielle :
+https://learn.microsoft.com/en-us/ef/core/modeling/
+
+🔑 3️⃣ Les clés (Keys)
+🔹 Titre :
+➜ Primary Key & Value Generation
+
+Tu dois comprendre :
+
+builder.HasKey(u => u.Id);
+builder.Property(u => u.Id).ValueGeneratedOnAdd();
+Concepts :
+
+Clé primaire
+
+Identity column
+
+Auto-increment
+
+📖 Source :
+https://learn.microsoft.com/en-us/ef/core/modeling/keys
+
+🧾 4️⃣ Configuration des propriétés
+🔹 Titre :
+➜ Property Configuration
+
+Tu dois comprendre :
+
+.IsRequired()
+
+.HasMaxLength()
+
+.HasDefaultValue()
+
+.HasDefaultValueSql()
+
+Exemple important :
+
+.HasDefaultValueSql("GETUTCDATE()");
+
+👉 Ça signifie que SQL Server génère la valeur.
+
+📖 Source :
+https://learn.microsoft.com/en-us/ef/core/modeling/entity-properties
+
+📌 5️⃣ Index & Contraintes uniques
+🔹 Titre :
+➜ Indexes & Unique Constraints
+
+Tu dois comprendre :
+
+builder.HasIndex(u => u.Email).IsUnique();
+
+Concepts :
+
+Index
+
+Unique constraint
+
+Différence entre clé primaire et unique index
+
+📖 Source :
+https://learn.microsoft.com/en-us/ef/core/modeling/indexes
+
+🔗 6️⃣ Les relations (Très Très Important)
+🔹 Titre :
+➜ Relationships in EF Core
+
+Tu dois maîtriser :
+
+One-to-Many
+
+Foreign Key
+
+Navigation Properties
+
+DeleteBehavior
+
+Principal vs Dependent
+
+Exemple dans ton code :
+
+builder.HasMany(u => u.UserRoles)
+       .WithOne(ur => ur.User)
+       .HasForeignKey(ur => ur.UserId)
+       .OnDelete(DeleteBehavior.Cascade);
+
+Tu dois comprendre :
+
+Élément	Signification
+HasMany	User est Parent
+WithOne	UserRole est Enfant
+HasForeignKey	FK dans UserRole
+Cascade	Si User supprimé → UserRoles supprimés
+
+📖 Source :
+https://learn.microsoft.com/en-us/ef/core/modeling/relationships/
+
+⚠ 7️⃣ DeleteBehavior (Très important en base)
+🔹 Titre :
+➜ Cascade / Restrict / SetNull
+
+Dans ton code :
+
+.OnDelete(DeleteBehavior.Restrict);
+
+Tu dois comprendre :
+
+Type	Effet
+Cascade	Supprime les enfants
+Restrict	Bloque suppression
+SetNull	FK devient NULL
+
+📖 Source :
+https://learn.microsoft.com/en-us/ef/core/saving/cascade-delete
+
+🏗 8️⃣ IEntityTypeConfiguration
+🔹 Titre :
+➜ Separate Configuration Classes
+
+Tu dois comprendre :
+
+public class UserConfiguration : IEntityTypeConfiguration<User>
+
+Pourquoi on fait ça ?
+
+✔ Code propre
+✔ Séparation des responsabilités
+✔ Architecture professionnelle
+✔ Gros projets
+
+📖 Source :
+https://learn.microsoft.com/en-us/ef/core/modeling/#applying-configurations
+
+📊 Résumé global – Roadmap d’apprentissage
+
+Voici l’ordre idéal :
+
+1️⃣ Architecture EF Core
+2️⃣ DbContext
+3️⃣ Fluent API
+4️⃣ Keys
+5️⃣ Properties
+6️⃣ Indexes
+7️⃣ Relationships
+8️⃣ DeleteBehavior
+9️⃣ IEntityTypeConfiguration
+
+🎯 Si tu veux vraiment maîtriser ton code
+
+Tu dois comprendre :
+
+Comment EF Core transforme ça en SQL
+
+Comment les migrations sont générées
+
+Comment les contraintes apparaissent dans SQL Server
+
+Si tu veux, je peux te faire :
+
+🔥 Une carte mentale complète
+
+📊 Un tableau détaillé de chaque ligne de ton fichier
+
+🧩 Une explication ligne par ligne ultra détaillée
+
+🏗 Un schéma visuel des relations
+
+Dis-moi ce que tu veux approfondir 👌
