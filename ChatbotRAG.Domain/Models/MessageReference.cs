@@ -14,7 +14,7 @@ namespace Domain.Models
         public virtual Message Message { get; set; } = null!;
 
         public int DocumentChunkId { get; set; }
-        public virtual DocumentChunk DocumentChunk { get; set; } = null!;
+        public virtual DocumentChunks DocumentChunk { get; set; } = null!;
 
         public double RelevanceScore { get; set; } // Score de similarité/pertinence
 

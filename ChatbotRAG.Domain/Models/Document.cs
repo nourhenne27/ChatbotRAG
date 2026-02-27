@@ -42,7 +42,7 @@ namespace Domain.Models
         public string? Tags { get; set; } // JSON array ou comma-separated
 
         // Navigation properties
-        public virtual ICollection<DocumentChunk> Chunks { get; set; } = new List<DocumentChunk>();
+        public virtual ICollection<DocumentChunks> Chunks { get; set; } = new List<DocumentChunks>();
 
         public virtual ICollection<DocumentPermission> DocumentPermissions { get; set; } = new List<DocumentPermission>();
     }

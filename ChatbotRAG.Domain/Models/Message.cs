@@ -33,6 +33,6 @@ namespace Domain.Models
         public double? ConfidenceScore { get; set; }
 
         // Navigation properties
-        public virtual ICollection<MessageReference> MessageReferences { get; set; } = new List<MessageReference>();
+        public virtual ICollection<MessageReferences> MessageReferences { get; set; } = new List<MessageReferences>();
     }
 }
