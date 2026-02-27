@@ -1,171 +1,186 @@
-# 🤖 Chatbot RAG – Intelligent Internal Assistant
+# 🤖 Chatbot RAG — Assistance Interne Intelligente
 
-![.NET Core](https://img.shields.io/badge/.NET%20Core-3.1-blue)
-![Architecture](https://img.shields.io/badge/Architecture-Clean%20Architecture-green)
-![Pattern](https://img.shields.io/badge/Pattern-CQRS-orange)
-![Database](https://img.shields.io/badge/Database-SQL%20Server-red)
-![AI](https://img.shields.io/badge/AI-RAG%20%2B%20OpenAI-purple)
+> Un chatbot d'assistance interne basé sur l'approche **Retrieval Augmented Generation (RAG)**, construit avec **ASP.NET Core 3.1**, **Clean Architecture**, **CQRS**, et **OpenAI GPT-4**.
 
-> 🚀 Intelligent internal chatbot based on **RAG (Retrieval-Augmented Generation)**  
-> 🏗 Built with **ASP.NET Core 3.1 + Clean Architecture + CQRS**  
-> 🧠 Powered by **OpenAI Embeddings + GPT-4**
+![.NET](https://img.shields.io/badge/.NET_Core-3.1-512BD4?style=flat-square&logo=dotnet)
+![SQL Server](https://img.shields.io/badge/SQL_Server-2019-CC2927?style=flat-square&logo=microsoftsqlserver)
+
 
 ---
 
-# 📌 Table of Contents
+## 📋 Table des matières
 
-- [Project Overview](#-project-overview)
-- [Features](#-features)
+- [Présentation](#-présentation)
 - [Architecture](#-architecture)
-- [RAG Pipeline](#-rag-pipeline)
-- [Technologies](#-technologies)
-- [Project Structure](#-project-structure)
-- [Installation Guide](#️-installation-guide)
-- [Database Setup](#-database-setup)
+- [Stack technique](#-stack-technique)
+- [Structure du projet](#-structure-du-projet)
+- [Prérequis](#-prérequis)
+- [Installation](#-installation)
 - [Configuration](#-configuration)
-- [Running the Project](#-running-the-project)
-- [API Endpoints](#-api-endpoints)
-- [Future Improvements](#-future-improvements)
-- [Author](#-author)
+- [Démarrage](#-démarrage)
+- [Endpoints & Interfaces](#-endpoints--interfaces)
+- [Diagramme de classes](#-diagramme-de-classes)
+- [Commandes utiles](#-commandes-utiles)
+- [Contribuer](#-contribuer)
 
 ---
 
-# 📖 Project Overview
+## 🎯 Présentation
 
-This project is an **Intelligent Internal Chatbot System** designed to help employees retrieve information from internal company documents such as:
+Ce projet implémente un **chatbot d'assistance interne** permettant aux employés d'interroger les documents de l'entreprise (PDF, Word, TXT) en langage naturel.
 
-- PDF files  
-- Word documents  
-- Text files  
-- Reports & Procedures  
+Le système repose sur le pipeline **RAG** :
 
-The system uses the **RAG (Retrieval-Augmented Generation)** approach:
+1. 📄 **Ingestion** — Les documents internes sont découpés en chunks et encodés en vecteurs 
+2. 🔍 **Retrieval** — À chaque question, les chunks les plus pertinents sont retrouvés 
+3. 💬 **Generation** —.... génère une réponse contextualisée en s'appuyant sur ces chunks
 
-1. Retrieve relevant document chunks using vector similarity  
-2. Generate contextual responses using GPT  
-3. Provide traceable references to document sources  
+### Fonctionnalités principales
+
+- Indexation automatique de documents (PDF, DOCX, TXT)
+- Recherche sémantique vectorielle
+- Génération de réponses avec citation des sources
+- Gestion des utilisateurs, rôles et permissions
+- Traçabilité complète des conversations et messages
+- Interface Angular moderne et responsive
+- Documentation API interactive 
 
 ---
 
-# 🎯 Features
+## 🏗 Architecture
 
-- Document upload (PDF, DOCX, TXT)  
-- Automatic text extraction  
-- Smart text chunking  
-- Embedding generation (OpenAI)  
-- Vector similarity search  
-- GPT-4 contextual response generation  
-- Conversation history management  
-- Role-based access control (RBAC)  
-- JWT Authentication  
-- Clean Architecture + CQRS  
-            ┌──────────────────────┐
-            │        API Layer     │
-            │  Controllers + JWT   │
-            └───────────┬──────────┘
+Le projet suit la **Clean Architecture** combinée au pattern **CQRS** (Command Query Responsibility Segregation) avec **MediatR**.
+
+```
+┌──────────────────────────────────────────────────────────┐
+│                      Angular (UI)                        │
+└────────────────────────┬─────────────────────────────────┘
+                         │ HTTP / SignalR
+┌────────────────────────▼─────────────────────────────────┐
+│                    Api (ASP.NET Core)                    │
+│               Controllers · Middleware · JWT             │
+└────────┬─────────────────────────────────┬───────────────┘
+         │ Commands                         │ Queries
+┌────────▼──────────────┐    ┌─────────────▼───────────────┐
+│   Command Handlers    │    │      Query Handlers          │
+│  Validation · Write   │    │   Optimized · DTOs · Read    │
+└────────┬──────────────┘    └─────────────┬───────────────┘
+         └──────────────┬──────────────────┘
                         │
-            ┌───────────▼──────────┐
-            │      Application     │
-            │ Commands / Queries   │
-            │ Handlers (MediatR)   │
-            └───────────┬──────────┘
+         ┌──────────────▼──────────────┐
+         │       Data (EF Core)        │
+         │  Repositories · DbContext   │
+         └──────────────┬──────────────┘
                         │
-            ┌───────────▼──────────┐
-            │     Infrastructure   │
-            │ EF Core + Services   │
-            └───────────┬──────────┘
-                        │
-                ┌───────▼───────┐
-                │  SQL Server   │
-                └───────────────┘
----
+         ┌──────────────▼──────────────┐
+         │      SQL Server 2019        │
+         └─────────────────────────────┘
 
-# 🏗 Architecture
+         ┌─────────────────────────────┐
+         │    Infra (Services IA)      │
+         │  OpenAI · Azure Search      │
+         │  Document Processing        │
+         └─────────────────────────────┘
+```
 
----
+**Règles de dépendance entre les couches :**
 
-# 🧠 RAG Pipeline
-
-## Phase 1 – Indexing
-
-1. Upload document  
-2. Extract text  
-3. Split into chunks (~500 tokens)  
-4. Generate embeddings  
-5. Store in database  
-
-## Phase 2 – Retrieval
-
-1. Generate embedding of user question  
-2. Compute cosine similarity  
-3. Retrieve Top-K relevant chunks  
-
-## Phase 3 – Generation
-
-1. Build prompt with context + history  
-2. Send to GPT-4  
-3. Save response  
+```
+Domain      ← Aucune dépendance (couche pure)
+Data        ← Domain
+Infra       ← Domain · Data
+Api         ← Domain · Data · Infra
+```
 
 ---
 
-# 🛠 Technologies
+## 🛠 Stack technique
 
-### Backend
-- ASP.NET Core 3.1
-- Entity Framework Core (Code First)
-- MediatR (CQRS)
-- AutoMapper
-- FluentValidation
-- Serilog
-- JWT Authentication
-
-### AI
-- OpenAI API (Embeddings + GPT-4)
-- Cosine Similarity
-
-### Database
-- SQL Server 2019
-
+| Catégorie | Technologie | Version | Rôle |
+|-----------|-------------|---------|------|
+| **Backend** | ASP.NET Core | 3.1 | Framework API REST |
+| | Entity Framework Core | 3.1 | ORM Code First |
+| | SQL Server | 2019 | Base de données relationnelle |
+| | MediatR | 8.0 | Implémentation CQRS |
+| | AutoMapper | 10.0 | Mapping entités ↔ DTOs |
+| | FluentValidation | 9.0 | Validation des commandes |
+| | Serilog | 2.10 | Logging structuré |
+| | JWT Bearer | 3.1 | Authentification |
+| | Swashbuckle | 5.2 | Documentation Swagger |
+| **IA / ML** |
+| **Frontend** | Angular | 
 ---
-# 📂 Project Structure
-```text
-ChatbotRAG/
+
+## 📁 Structure du projet
+
+```
+Solution 'ChatbotRAG'
 │
-├── Api/
-│   ├── Controllers/
-│   ├── Middleware/
-│   ├── Filters/
+├── 📁 Api                          # Couche présentation
+│   ├── Controllers/                # Endpoints REST
+│   ├── Filters/                    # Filtres globaux
+│   ├── Middleware/                 # Pipeline HTTP
+│   ├── appsettings.json
+│   ├── Program.cs
 │   └── Startup.cs
 │
-├── Domain/
-│   ├── Models/
-│   ├── Commands/
-│   ├── Queries/
-│   ├── Handlers/
-│   └── Interfaces/
+├── 📁 Domain                       # Couche métier (aucune dépendance)
+│   ├── Models/                     # Entités (User, Document, Message…)
+│   ├── Commands/                   # Commandes CQRS (écriture)
+│   ├── Queries/                    # Requêtes CQRS (lecture)
+│   ├── Handlers/                   # Handlers MediatR
+│   └── Interface/                  # IGenericRepository<T>
 │
-├── Data/
+├── 📁 Data                         # Couche persistance
 │   ├── Context/
-│   ├── Configurations/
-│   ├── Repositories/
+│   │   └── ApplicationDbContext.cs
+│   ├── Repositories/               # Implémentations des repositories
 │   └── Migrations/
 │
-└── Infra/
-    ├── AI Services/
-    ├── Document Processing/
-    └── Storage/
+├── 📁 Infra                        # Couche infrastructure / services IA
+│   └── Services/
+│       ├── OpenAIEmbeddingService.cs
+│       ├── VectorSearchService.cs
+│       └── DocumentProcessingService.cs
+│
+└── 📁 frontend                     # Application Angular
+    ├── src/
+    └── package.json
 ```
----
-
-# ⚙️ Installation Guide
-
-## 1️⃣ Prerequisites
-
-- Visual Studio 2019
-- .NET Core 3.1 SDK
-- SQL Server 2019
-- Git
 
 ---
+
+## ✅ Prérequis
+
+| Outil | Version minimale |
+|-------|-----------------|
+| Windows | 10 / 11 |
+| Visual Studio | 2019 (charge de travail ASP.NET) |
+| .NET Core SDK | 3.1 |
+| SQL Server | 2019 Developer Edition |
+| Node.js |  |
+| Angular CLI |  |
+| Git |  |
+
+---
+
+
+**Entités principales :**
+
+| Entité | Description |
+|--------|-------------|
+| `User` | Utilisateur avec email, rôles et permissions |
+| `Role` / `Permission` | Système RBAC granulaire |
+| `Document` | Fichier indexé (PDF, DOCX, TXT) |
+| `DocumentChunk` | Fragment de document avec vecteur d'embedding |
+| `Conversation` | Session de chat d'un utilisateur |
+| `Message` | Message individuel (user ou assistant) |
+| `MessageReference` | Source documentaire utilisée pour une réponse |
+
+---
+
+## 📦 
+
+**Version** : 1.0 · **Framework** : ASP.NET Core 3.1 · **Auteur** : Nourhenne ben Abdelghaffar · **Année** : 2026
 
 # 📂 Project Structure
