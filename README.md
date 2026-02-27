@@ -1,320 +1,171 @@
-# 🤖 ChatbotRAG — Intelligent Internal Assistant
+# 🤖 Chatbot RAG – Intelligent Internal Assistant
 
-> AI-powered internal chatbot based on **RAG (Retrieval Augmented Generation)** architecture,  
-> built with **.NET 5 Web API** backend and **Angular** frontend.
+![.NET Core](https://img.shields.io/badge/.NET%20Core-3.1-blue)
+![Architecture](https://img.shields.io/badge/Architecture-Clean%20Architecture-green)
+![Pattern](https://img.shields.io/badge/Pattern-CQRS-orange)
+![Database](https://img.shields.io/badge/Database-SQL%20Server-red)
+![AI](https://img.shields.io/badge/AI-RAG%20%2B%20OpenAI-purple)
 
----
-
-## 📋 Table of Contents
-
-- [Overview](#overview)
-- [Architecture](#architecture)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Database Schema](#database-schema)
-- [Getting Started](#getting-started)
-- [Configuration](#configuration)
-- [API Endpoints](#api-endpoints)
-- [How RAG Works](#how-rag-works)
-- [Authentication & Roles](#authentication--roles)
+> 🚀 Intelligent internal chatbot based on **RAG (Retrieval-Augmented Generation)**  
+> 🏗 Built with **ASP.NET Core 3.1 + Clean Architecture + CQRS**  
+> 🧠 Powered by **OpenAI Embeddings + GPT-4**
 
 ---
 
-## 📌 Overview
+# 📌 Table of Contents
 
-**ChatbotRAG** is an internal enterprise assistant that allows employees to ask questions  
-about company documents (PDF, DOCX) and get accurate, context-based answers powered by a Large Language Model.
-
-### Key Features
-
-- 📄 **Document Indexing** — Upload and index PDF/DOCX files automatically
-- 🔍 **Semantic Search** — Vector similarity search using embeddings
-- 🧠 **RAG Pipeline** — Retrieval-Augmented Generation for accurate answers
-- 💬 **Chat with History** — Conversation sessions with full message history
-- 🔐 **Role-Based Access** — Employé / Administrateur / SuperAdmin
-- 📊 **Feedback System** — Users can rate each response
-
----
-
-## 🏗️ Architecture
-
-```
-┌─────────────────────────────────────────────────────┐
-│                   Angular Frontend                   │
-│              (Chat UI + Document Upload)             │
-└─────────────────────┬───────────────────────────────┘
-                      │ HTTP / REST API
-┌─────────────────────▼───────────────────────────────┐
-│              .NET 5 Web API (Backend)                │
-│                                                      │
-│  ┌──────────┐  ┌──────────┐  ┌────────────────────┐ │
-│  │   Auth   │  │   Chat   │  │ Document Controller │ │
-│  │Controller│  │Controller│  │   (Upload/Index)    │ │
-│  └────┬─────┘  └────┬─────┘  └─────────┬──────────┘ │
-│       │             │                   │            │
-│  ┌────▼─────────────▼───────────────────▼──────────┐ │
-│  │              CQRS — MediatR                      │ │
-│  │     Commands │ Queries │ Handlers                │ │
-│  └────┬─────────────────────────────────┬──────────┘ │
-│       │                                 │            │
-│  ┌────▼──────────┐          ┌───────────▼──────────┐ │
-│  │  RAG Pipeline │          │   SQL Server (EF Core)│ │
-│  │  ┌──────────┐ │          │  Users, Sessions,    │ │
-│  │  │Extraction│ │          │  Messages, Documents, │ │
-│  │  │(PDF/DOCX)│ │          │  Chunks, Vectors     │ │
-│  │  └────┬─────┘ │          └──────────────────────┘ │
-│  │  ┌────▼─────┐ │                                   │
-│  │  │Embedding │ │◄── OpenAI text-embedding-3-small   │
-│  │  └────┬─────┘ │                                   │
-│  │  ┌────▼─────┐ │                                   │
-│  │  │ Retrieval│ │  Cosine Similarity (C#)            │
-│  │  └────┬─────┘ │                                   │
-│  │  ┌────▼─────┐ │                                   │
-│  │  │   LLM    │ │◄── OpenAI GPT-4o-mini              │
-│  │  └──────────┘ │                                   │
-│  └───────────────┘                                   │
-└─────────────────────────────────────────────────────┘
-```
+- [Project Overview](#-project-overview)
+- [Features](#-features)
+- [Architecture](#-architecture)
+- [RAG Pipeline](#-rag-pipeline)
+- [Technologies](#-technologies)
+- [Project Structure](#-project-structure)
+- [Installation Guide](#️-installation-guide)
+- [Database Setup](#-database-setup)
+- [Configuration](#-configuration)
+- [Running the Project](#-running-the-project)
+- [API Endpoints](#-api-endpoints)
+- [Future Improvements](#-future-improvements)
+- [Author](#-author)
 
 ---
 
-## 🛠️ Tech Stack
+# 📖 Project Overview
+
+This project is an **Intelligent Internal Chatbot System** designed to help employees retrieve information from internal company documents such as:
+
+- PDF files  
+- Word documents  
+- Text files  
+- Reports & Procedures  
+
+The system uses the **RAG (Retrieval-Augmented Generation)** approach:
+
+1. Retrieve relevant document chunks using vector similarity  
+2. Generate contextual responses using GPT  
+3. Provide traceable references to document sources  
+
+---
+
+# 🎯 Features
+
+- Document upload (PDF, DOCX, TXT)  
+- Automatic text extraction  
+- Smart text chunking  
+- Embedding generation (OpenAI)  
+- Vector similarity search  
+- GPT-4 contextual response generation  
+- Conversation history management  
+- Role-based access control (RBAC)  
+- JWT Authentication  
+- Clean Architecture + CQRS  
+            ┌──────────────────────┐
+            │        API Layer     │
+            │  Controllers + JWT   │
+            └───────────┬──────────┘
+                        │
+            ┌───────────▼──────────┐
+            │      Application     │
+            │ Commands / Queries   │
+            │ Handlers (MediatR)   │
+            └───────────┬──────────┘
+                        │
+            ┌───────────▼──────────┐
+            │     Infrastructure   │
+            │ EF Core + Services   │
+            └───────────┬──────────┘
+                        │
+                ┌───────▼───────┐
+                │  SQL Server   │
+                └───────────────┘
+---
+
+# 🏗 Architecture
+
+---
+
+# 🧠 RAG Pipeline
+
+## Phase 1 – Indexing
+
+1. Upload document  
+2. Extract text  
+3. Split into chunks (~500 tokens)  
+4. Generate embeddings  
+5. Store in database  
+
+## Phase 2 – Retrieval
+
+1. Generate embedding of user question  
+2. Compute cosine similarity  
+3. Retrieve Top-K relevant chunks  
+
+## Phase 3 – Generation
+
+1. Build prompt with context + history  
+2. Send to GPT-4  
+3. Save response  
+
+---
+
+# 🛠 Technologies
 
 ### Backend
-| Technology | Version | Usage |
-|-----------|---------|-------|
-| .NET | 5.0 | Web API Framework |
-| ASP.NET Core Identity | 5.0 | Authentication & User Management |
-| Entity Framework Core | 5.0 | ORM — Code First |
-| SQL Server | 2019 | Main Database |
-| MediatR | 9.0 | CQRS Pattern |
-| AutoMapper | 8.0 | DTO Mapping |
-| Swashbuckle | 5.6 | Swagger API Docs |
-| PdfPig | 0.1.7 | PDF Text Extraction |
-| OpenXml SDK | 2.18 | DOCX Text Extraction |
-| Azure.AI.OpenAI | latest | LLM + Embeddings |
-| JWT Bearer | 5.0 | Token Authentication |
+- ASP.NET Core 3.1
+- Entity Framework Core (Code First)
+- MediatR (CQRS)
+- AutoMapper
+- FluentValidation
+- Serilog
+- JWT Authentication
 
-### Frontend
-| Technology | Usage |
-|-----------|-------|
-| Angular | Chat UI |
-| TypeScript | Language |
-| TailwindCSS | Styling |
+### AI
+- OpenAI API (Embeddings + GPT-4)
+- Cosine Similarity
+
+### Database
+- SQL Server 2019
 
 ---
-
-## 📁 Project Structure
-
-```
+# 📂 Project Structure
+```text
 ChatbotRAG/
 │
-├── ChatbotRAG.Api/                  # ASP.NET Core Web API
+├── Api/
 │   ├── Controllers/
-│   │   ├── AuthController.cs        # Login, Register, JWT
-│   │   ├── ChatController.cs        # Send message, Get history
-│   │   └── DocumentController.cs   # Upload, Index documents
-│   ├── appsettings.json
-│   ├── Program.cs
+│   ├── Middleware/
+│   ├── Filters/
 │   └── Startup.cs
 │
-├── ChatbotRAG.Domain/               # Business Logic (CQRS)
+├── Domain/
 │   ├── Models/
-│   │   ├── AppUser.cs               # Utilisateur (TPH: Employé/Admin/SuperAdmin)
-│   │   ├── Session.cs               # Chat session
-│   │   ├── Message.cs               # Chat message
-│   │   ├── Document.cs              # Uploaded document
-│   │   ├── Chunk.cs                 # Text chunk + embedding
-│   │   ├── LogSysteme.cs            # System logs
-│   │   └── ...
 │   ├── Commands/
-│   │   ├── UploadDocumentCommand.cs
-│   │   ├── SendMessageCommand.cs
-│   │   └── CreateSessionCommand.cs
 │   ├── Queries/
-│   │   ├── GetSessionQuery.cs
-│   │   └── GetAllSessionsQuery.cs
 │   ├── Handlers/
-│   │   ├── UploadDocumentHandler.cs
-│   │   ├── SendMessageHandler.cs
-│   │   └── ...
-│   └── Interface/
-│       ├── IDocumentRepository.cs
-│       ├── ISessionRepository.cs
-│       ├── IEmbeddingService.cs
-│       └── ILLMService.cs
+│   └── Interfaces/
 │
-├── ChatbotRAG.Data/                 # Data Access Layer
+├── Data/
 │   ├── Context/
-│   │   └── AppDbContext.cs          # EF Core DbContext
-│   └── Repositories/
-│       ├── DocumentRepository.cs
-│       └── SessionRepository.cs
+│   ├── Configurations/
+│   ├── Repositories/
+│   └── Migrations/
 │
-└── ChatbotRAG.Infra/                # External Services
-    └── Services/
-        ├── OpenAIEmbeddingService.cs
-        ├── OpenAILLMService.cs
-        └── DocumentExtractorService.cs
+└── Infra/
+    ├── AI Services/
+    ├── Document Processing/
+    └── Storage/
 ```
+---
+
+# ⚙️ Installation Guide
+
+## 1️⃣ Prerequisites
+
+- Visual Studio 2019
+- .NET Core 3.1 SDK
+- SQL Server 2019
+- Git
 
 ---
 
-## 🗄️ Database Schema
-
-```
-AspNetUsers          → AppUser (Identity + TPH: Employé/Admin/SuperAdmin)
-Sessions             → Chat sessions per user
-Messages             → Messages inside a session
-Documents            → Uploaded documents
-Chunks               → Text chunks from documents (with EmbeddingJson)
-LogSystemes          → System action logs
-```
-
-> **Note:** Embeddings are stored as JSON strings (`nvarchar(max)`) in SQL Server.  
-> Cosine similarity is computed in C# at retrieval time.
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- [Visual Studio 2019+](https://visualstudio.microsoft.com/)
-- [SQL Server 2019](https://www.microsoft.com/sql-server)
-- [.NET 5 SDK](https://dotnet.microsoft.com/download/dotnet/5.0)
-- [Node.js](https://nodejs.org/) (for Angular frontend)
-- OpenAI API Key
-
-### Installation
-
-**1. Clone the repository**
-```bash
-git clone https://github.com/your-username/ChatbotRAG.git
-cd ChatbotRAG
-```
-
-**2. Configure appsettings.json**
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=.\\SQLEXPRESS;Database=ChatbotRAG;Trusted_Connection=True;"
-  },
-  "OpenAI": {
-    "ApiKey": "sk-your-api-key-here"
-  },
-  "Jwt": {
-    "Key": "YourSuperSecretKey32CharactersMin!!",
-    "Issuer": "ChatbotRAG",
-    "Audience": "ChatbotRAGUsers"
-  }
-}
-```
-
-**3. Run database migrations**
-```bash
-# In Visual Studio — NuGet Package Manager Console
-PM> add-migration InitialCreate
-PM> update-database
-```
-
-**4. Run the API**
-```bash
-dotnet run --project ChatbotRAG.Api
-# API available at: https://localhost:5001
-# Swagger UI at:    https://localhost:5001/swagger
-```
-
----
-
-## ⚙️ Configuration
-
-| Key | Description |
-|-----|-------------|
-| `ConnectionStrings:DefaultConnection` | SQL Server connection string |
-| `OpenAI:ApiKey` | Your OpenAI API key |
-| `Jwt:Key` | Secret key for JWT token signing (min 32 chars) |
-| `Jwt:Issuer` | JWT issuer name |
-| `Jwt:Audience` | JWT audience name |
-
----
-
-## 📡 API Endpoints
-
-### Auth
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/register` | Register new user |
-| POST | `/api/auth/login` | Login and get JWT token |
-
-### Chat
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/chat/session` | Create new session |
-| POST | `/api/chat/message` | Send message (triggers RAG) |
-| GET | `/api/chat/session/{id}` | Get session with messages |
-| GET | `/api/chat/sessions` | Get all sessions for current user |
-
-### Documents
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/document/upload` | Upload and index a document |
-| GET | `/api/document` | List all documents |
-| DELETE | `/api/document/{id}` | Delete a document |
-
----
-
-## 🧠 How RAG Works
-
-```
-1. INDEXING (on document upload)
-   ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
-   │ PDF/DOCX │───►│ Extract  │───►│  Split   │───►│ Embed &  │
-   │  Upload  │    │  Text    │    │  Chunks  │    │  Store   │
-   └──────────┘    └──────────┘    └──────────┘    └──────────┘
-
-2. QUERYING (on user message)
-   ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
-   │ User     │───►│ Embed    │───►│ Find Top │───►│ Build    │
-   │ Question │    │ Question │    │ 5 Chunks │    │ Prompt   │
-   └──────────┘    └──────────┘    └──────────┘    └────┬─────┘
-                                                        │
-                                                   ┌────▼─────┐
-                                                   │   LLM    │
-                                                   │ GPT-4o   │
-                                                   └────┬─────┘
-                                                        │
-                                                   ┌────▼─────┐
-                                                   │ Response │
-                                                   │ + Save   │
-                                                   └──────────┘
-```
-
----
-
-## 🔐 Authentication & Roles
-
-The system uses **ASP.NET Core Identity** with **JWT Bearer tokens** and **TPH (Table Per Hierarchy)** pattern.
-
-| Role | Permissions |
-|------|------------|
-| **Employé** | Chat, view own sessions, give feedback |
-| **Administrateur** | + Manage users, view logs, manage documents |
-| **SuperAdmin** | + Configure LLM API keys, manage all permissions |
-
-> **Note:** One user is exclusively ONE role — never multiple (as defined in the class diagram).
-
----
-
-## 👩‍💻 Author
-
-**Developed by:** Mme Souha Ben JEDDI  
-**Organization:** PGH — Unité Développement  
-**Year:** 2022–2024
-
----
-
-## 📄 License
-
-This project is proprietary and for internal use only.  
-© PGH — Poulina Group Holding. All rights reserved.
+# 📂 Project Structure
